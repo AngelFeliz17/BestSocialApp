@@ -89,7 +89,7 @@ router.put('/update-profile', middleware, upload.single("avatar"), async (req, r
             bio,
         };
 
-        if(req.file.path) newUserInfo.avatar_url = req.file.path;
+        if(req.file?.path) newUserInfo.avatar_url = req.file?.path;
         if(password && !(await bcrypt.compare(password, user.password))) newUserInfo.password = await bcrypt.hash(password, 10);
         const updatedUser = await User.findByIdAndUpdate( req.userId, newUserInfo, { new: true }).select("-password");
 
@@ -102,7 +102,7 @@ router.put('/update-profile', middleware, upload.single("avatar"), async (req, r
 
 router.put('/update-avatar', middleware, upload.single("avatar"), async (req, res) => {
     try {
-        const avatar = req.file.path;
+        const avatar = req.file?.path;
         if(!avatar) return res.status(400).json({ msg: "Avatar not found" });
         await User.findByIdAndUpdate(req.userId, { avatar });
         const user = await User.findOne({ _id: req.userId }).select("-password");
