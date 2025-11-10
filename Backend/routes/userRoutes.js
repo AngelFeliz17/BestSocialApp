@@ -26,6 +26,7 @@ router.post('/register', async (req, res) => {
         await sendEmail(email, "Welcome to the family!", `<h1>Hello ${username}, welcome to the app where you'll find anything you need. </h1>`);
         res.status(200).json({ msg: "User created successfully!" });
     } catch (error) {
+        console.log(error)
         res.status(500).json({ msg: "Error creating user", error });
     }
 })
@@ -94,6 +95,7 @@ router.put('/update-profile', middleware, upload.single("avatar"), async (req, r
 
         res.status(200).json({ msg: "Profile updated successfully!", user: updatedUser });
     } catch (error) {
+        console.log(error)
         res.status(500).json({ msg: "Error updating profile", error });
     }
 });
