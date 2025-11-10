@@ -23,9 +23,12 @@ router.post('/register', async (req, res) => {
         const hashedPass = await bcrypt.hash(password, 10);
         const newUser = new User({ username, email, password: hashedPass });
         await newUser.save();
-        await sendEmail(email, "Welcome to the family!", `<h1>Hello ${username}, welcome to the app where you'll find anything you need. </h1>`);
         res.status(200).json({ msg: "User created successfully!" });
+        sendEmail(email, "Welcome to the family!", `<h1>Hello ${username}, welcome to the app where you'll find anything you need. </h1>`)
+            .catch(err => console.error("Error sending email:", err));
+;
     } catch (error) {
+        console.log(error)
         res.status(500).json({ msg: "Error creating user", error });
     }
 })
@@ -88,19 +91,20 @@ router.put('/update-profile', middleware, upload.single("avatar"), async (req, r
             bio,
         };
 
-        if(req.file.path) newUserInfo.avatar_url = req.file.path;
+        if(req.file?.path) newUserInfo.avatar_url = req.file?.path;
         if(password && !(await bcrypt.compare(password, user.password))) newUserInfo.password = await bcrypt.hash(password, 10);
         const updatedUser = await User.findByIdAndUpdate( req.userId, newUserInfo, { new: true }).select("-password");
 
         res.status(200).json({ msg: "Profile updated successfully!", user: updatedUser });
     } catch (error) {
+        console.log(error)
         res.status(500).json({ msg: "Error updating profile", error });
     }
 });
 
 router.put('/update-avatar', middleware, upload.single("avatar"), async (req, res) => {
     try {
-        const avatar = req.file.path;
+        const avatar = req.file?.path;
         if(!avatar) return res.status(400).json({ msg: "Avatar not found" });
         await User.findByIdAndUpdate(req.userId, { avatar });
         const user = await User.findOne({ _id: req.userId }).select("-password");

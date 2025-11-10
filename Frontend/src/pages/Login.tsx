@@ -23,7 +23,7 @@ const Login: React.FC = () => {
       localStorage.setItem("token", res.data.token);
       navigate("/feed");
     }).catch((err) => {
-      setError(err.response.data.msg);
+      setError(err.response?.data?.msg || "Login error");
       setLoading(false);
     });
   }
