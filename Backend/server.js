@@ -9,6 +9,10 @@ import followRoutes from "./routes/followRoutes.js"
 dotenv.config();
 
 const app = express();
+const allowedOrigins = [
+  "http://localhost:5173",
+  process.env.FRONTEND_URL,
+];
 
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
@@ -16,7 +20,7 @@ app.use(express.urlencoded({ limit: "10mb", extended: true }));
 // Middleware
 app.use(express.json());
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: allowedOrigins,
   credentials: true,
 }));
 
