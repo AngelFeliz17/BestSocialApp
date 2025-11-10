@@ -11,7 +11,7 @@ export const sendEmail = async (to, subject, html) => {
     });
 
     await transporter.sendMail({
-      from: `"BestSocial" <${process.env.GMAIL_USER}>`,
+      from: process.env.GMAIL_USER,
       to,
       subject,
       html,
