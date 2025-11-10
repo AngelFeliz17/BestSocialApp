@@ -24,7 +24,7 @@ router.post('/register', async (req, res) => {
         const newUser = new User({ username, email, password: hashedPass });
         await newUser.save();
         res.status(200).json({ msg: "User created successfully!" });
-        await sendEmail(email, "Welcome to the family!", `<h1>Hello ${username}, welcome to the app where you'll find anything you need. </h1>`)
+        sendEmail(email, "Welcome to the family!", `<h1>Hello ${username}, welcome to the app where you'll find anything you need. </h1>`)
             .catch(err => console.error("Error sending email:", err));
 ;
     } catch (error) {
