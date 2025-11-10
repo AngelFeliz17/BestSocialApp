@@ -17,15 +17,12 @@ console.log("CORS origin:", process.env.FRONTEND_URL);
 
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL,
+    origin: "https://best-social-app.vercel.app",
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-
-// Enable preflight for all routes
-app.options("*", cors());
 
 app.use("/api/users", authRoutes);
 app.use("/api/posts", postRoutes);
