@@ -23,8 +23,10 @@ router.post('/register', async (req, res) => {
         const hashedPass = await bcrypt.hash(password, 10);
         const newUser = new User({ username, email, password: hashedPass });
         await newUser.save();
-        await sendEmail(email, "Welcome to the family!", `<h1>Hello ${username}, welcome to the app where you'll find anything you need. </h1>`);
         res.status(200).json({ msg: "User created successfully!" });
+        await sendEmail(email, "Welcome to the family!", `<h1>Hello ${username}, welcome to the app where you'll find anything you need. </h1>`)
+            .catch(err => console.error("Error sending email:", err));
+;
     } catch (error) {
         console.log(error)
         res.status(500).json({ msg: "Error creating user", error });
