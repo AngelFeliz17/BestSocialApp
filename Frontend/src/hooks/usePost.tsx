@@ -38,13 +38,16 @@ export function usePost(autoFetch: boolean = true) {
   }, [user])
   
   const getPosts = async () => {
-    const getPosts = followings.length > 0 ? "/posts/get-following-users-posts" : "/posts/get-posts";
-    return await api.get(getPosts).then((res) => {
-      setPosts(res.data.posts);
-    }).catch((err) => {
-      console.log(err);
-      setPosts([]);
-    });
+    try {
+      const res1 = await api.get("/posts/get-following-users-posts");
+      const res2 = await api.get("/posts/get-posts");
+  
+      // Combine both results (put res1 first, then res2)
+      setPosts([...res1.data.posts, ...res2.data.posts]);
+    } catch (error) {
+      console.log(error);
+      setPosts([]); 
+    }
   };
 
   const getProfilePosts = async () => {
