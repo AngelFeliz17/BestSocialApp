@@ -85,11 +85,11 @@ router.get('/get-following-users-posts', middleware, async (req, res) => {
     try {
       const followingDocs = await Follow.find({ follower_user_id: req.userId });
   
-      const Ids = followingDocs.map(f => f.following_user_id); // <-- aquí vienen los ObjectId
+      const Ids = followingDocs.map(f => f.following_user_id);
   
       const posts = await Post.find({ user_id: { $in: Ids } })
         .populate("user_id", "-password")
-        .sort({ createdAt: -1 }); // opcional: ordenar del más reciente al más viejo
+        .sort({ createdAt: -1 });
       return res.status(200).json({ posts });
   
     } catch (error) {
