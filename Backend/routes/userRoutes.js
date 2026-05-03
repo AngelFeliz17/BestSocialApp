@@ -54,7 +54,7 @@ router.get("/search", async (req, res) => {
     const { q } = req.query;
   
     const users = await User.find({
-      username: { $regex: q, $options: "i" } // búsqueda parcial, case insensitive
+      username: { $regex: q, $options: "i" } // Partial search, case insensitive
     }).select("_id username email avatar_url");
   
     res.json({ users });
